@@ -15,7 +15,13 @@ def wish_hello_world_handler(event, context):
     logging.info(event)
   
     try:
-        s3.Bucket('dev-days-test').download_file(KEY, '/tmp/hello.txt')
+        temp_file = "/tmp/hello.txt"
+        s3.Bucket('dev-days-test').download_file(KEY, temp_file)
+        file = open(temp-file,"r")
+        return {
+            'statusCode': 200,
+            'body': file.read()
+        }
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == "404":
           print("The object does not exist.")
